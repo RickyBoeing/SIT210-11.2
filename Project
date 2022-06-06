@@ -1,0 +1,24 @@
+
+#include "Adafruit_DHT.h"
+#define DHTPIN 2
+#define DHTTYPE DHT11
+
+int temperature;
+
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup() 
+{
+     dht.begin();
+}
+
+void loop() {
+  temperature = dht.getTempFarenheit();
+  Particle.publish("temperature", String(temperature), PRIVATE);
+  if (temperature > 85 or temperature < 60)
+  {
+        Particle.publish("EVENT_PREFIX", String(temperature), PRIVATE);
+  }
+
+  delay(30000);
+}
